@@ -1,0 +1,199 @@
+liMargin = 0.2em
+lineHeight = 2em
+
+html, body
+  height 100%
+  width 100%
+  font-size 1.1em
+  overflow hidden
+
+.navbar-header
+  background-color #6f5499
+  position absolute
+  width 100%
+  height 2em
+  padding 0 1em 0 1em
+  z-index 100
+
+#bs-navbar
+  position fixed
+  top 2em
+  left 1em
+  width 8em
+  padding-left 1em
+  background-color #44296d
+  color white
+  z-index 100
+
+.navbar-nav
+  margin 0
+
+@media (min-width: 768px)
+  #bs-navbar
+    top 0
+    left 0
+    width auto
+    padding-left 0
+    background-color transparent
+  .navbar-nav
+    height 2em
+    line-height 2em
+  .navbar-nav > li > a
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height 2em
+    color white
+
+.navbar-nav li
+  padding 0
+
+.navbar-toggle .icon-bar
+    background-color white
+
+.nav > li > a:hover, .nav > li > a:focus
+    text-decoration none
+    background-color #eca7a7
+
+.navbar-toggle
+  float left 
+
+li
+  list-style: none;
+
+.full-width
+  width 100%
+  
+.center-content
+  display flex
+  justify-content center
+  align-items center
+  height 100%
+
+.logon
+  display inline-block
+  float right 
+  color black
+  cursor pointer
+  line-height 2em
+  margin-right 1em
+
+.add-friend
+  display block
+  height 2em
+  line-height 2.3em
+  font-size 2.5em
+  color green
+  cursor pointer
+  text-align center
+
+.page-content
+  width 100%
+  height 100%
+  padding 2.2em 1em 0 1em
+  overflow auto
+
+.no-padding
+  padding 0
+
+.item-list li
+  height lineHeight
+  line-height lineHeight
+  background #cecece
+  margin-top liMargin
+  padding 0 liMargin 0 liMargin
+  cursor pointer
+  border-radius 4px
+  span
+    display inline-block
+    line-height lineHeight
+  .glyphicon
+    color green 
+
+.right
+  float right 
+
+.container
+  height 100%
+  width 100%
+  padding 0
+
+.container > .navbar-header, .container > .navbar-collapse
+  padding 0
+  margin 0
+
+.navigator
+  position fixed
+  width 100%
+  left 0px
+  padding 10px
+  background-color #563d7c
+
+.nav-item
+  padding-right .5rem
+  padding-left .5rem
+
+#video, #videoBig
+  height 100%
+  width 100%
+
+#videoSmall
+  position absolute
+  left 0px
+  top 0px
+
+#videoBtn
+  position fixed
+  width 100%
+  bottom 8em
+  text-align center
+  opacity 0
+  transition: opacity 1s;
+
+#videoBtn.show
+  opacity 1
+
+#videoBtn
+  .btn
+    font-size 1.5em
+    border-radius 2em
+    margin-left 0.5em
+  .glyphicon
+    top 4px
+  .glyphicon-stop
+    left -1px
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10000px);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.message-box
+  display none
+  position absolute
+  width 100%
+  bottom 1em
+  text-align center
+  padding 0 1em 0 1em
+
+#mask
+  display none
+  position absolute
+  width 100%
+  height 100%
+  left 0
+  top 0
+  opacity 0.35
+  background white url(/static/img/spinner.gif) center no-repeat
+  z-index 1000
