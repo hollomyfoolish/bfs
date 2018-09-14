@@ -20,3 +20,5 @@ target/
 node_modules/
 dist/
 .gradle/
+bin/
+back-end/build
