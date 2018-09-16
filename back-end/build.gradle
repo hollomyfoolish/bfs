@@ -62,6 +62,9 @@ dependencies {
     compile "org.springframework:spring-web:" + project.springVersion
     compile "org.springframework:spring-webmvc:" + project.springVersion
     
+    compile "org.eclipse.persistence:javax.persistence:" + project.springJpaVersion
+    compile "org.springframework.data:spring-data-jpa:" + project.springDataJpaVersion
+    
     compile "org.springframework.security:spring-security-core:" + project.springSecurityVersion
     compile "org.springframework.security:spring-security-web:" + project.springSecurityVersion
     compile "org.springframework.security:spring-security-config:" + project.springSecurityVersion
