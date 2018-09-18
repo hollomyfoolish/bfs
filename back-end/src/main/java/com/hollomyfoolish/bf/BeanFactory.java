@@ -23,7 +23,7 @@ import com.hollomyfoolish.service.ServiceBeanCfg;
 	RepoBeanCfg.class,
 	ServiceBeanCfg.class
 })
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "com.hollomyfoolish.repo")
 @EnableTransactionManagement
 public class BeanFactory {
 
@@ -40,7 +40,7 @@ public class BeanFactory {
 
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("com.acme.domain");
+		factory.setPackagesToScan("com.hollomyfoolish.entity");
 		factory.setDataSource(dataSource());
 		return factory;
 	}

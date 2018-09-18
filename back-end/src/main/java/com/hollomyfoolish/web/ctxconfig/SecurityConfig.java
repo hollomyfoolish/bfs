@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	// TODO config spring security here
+    	http
+    		.csrf().disable();
 //        http
 //            .authorizeRequests()
 //                .antMatchers("/saml2/**/*", "/index.html", "/", "/__index_test__.html").permitAll()
