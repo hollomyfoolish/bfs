@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        html, body{
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100%;
+            background: #382e5f;
+        }
+        #wrapper{
+            display: none;
+            margin: auto;
+            margin-top: 2em;
+        }
+        #board{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            border: 2px solid black;
+            margin: auto;
+            background-color: #f5f3f3;
+        }
+        .slot{
+            position: relative;
+            width: 33.33333%;
+            height: 33.3333%;
+        }
+        .empty-slot{
+            position: relative;
+            border-left: 2px solid;
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+        }
+        .card{
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            transition: opacity 0.5s;
+        }
+        .card:hover{
+            opacity: 0.5;
+        }
+        button{
+            width: 160px;
+            height: 40px;
+            margin-top: 2em;
+            text-align: center;
+            font-size: 1.6em;
+            cursor: pointer;
+        }
+    </style>
+    <title>Game</title>
+</head>
+<body>
+    <button id="start-btn">开始游戏</button>
+    <div id="wrapper">
+        <div id="board">
+            <div class="slot" id="slot-1"></div>
+            <div class="slot" id="slot-2"></div>
+            <div class="slot" id="slot-3"></div>
+            <div class="slot" id="slot-4"></div>
+            <div class="slot" id="slot-5"></div>
+            <div class="slot" id="slot-6"></div>
+            <div class="slot" id="slot-7"></div>
+            <div class="slot" id="slot-8"></div>
+            <div class="slot" id="slot-9"></div>
+        </div>
+    </div>
+    <script>
+        function init(src){
+            let srcImg = document.createElement('img');
+            srcImg.onload = function(i){
+                initBoard(srcImg, src);
+            }
+            srcImg.onerror = function(err){
+                console.error(error);
+            }
+            srcImg.src = src;
+        }
+
+        function formatString(pattern, values){
+            return pattern.replace(/\{(.+?)\}/g, (s, g) => {
+                if(g in values){
+                    return values[g];
+                }
+                return s;
+            });
+        }
+
+        function initBoard(img, src){
+            let wrapper = document.querySelector('#wrapper');
+            let board = document.querySelector('#board');
+            let pattern = 'background: url("{src}") {left}px {top}px no-repeat';
+            let width = img.width/3;
+            let height = img.height/3;
+            let targetIdxs = createValidRandomIdx();
+            board.style.cssText = formatString('width: {width}px;height: {height}px;', {width: img.width, height: img.height});
+            wrapper.style.cssText = formatString('width: {width}px;', {width: img.width + 4});
+            for(let i = 1; i < 10; i++){
+                let card = document.createElement('div');
+                card.id = 'card-' + i;
+                card.classList.add('card');
+                card.title = i;
+                card.style.cssText = formatString(pattern, {
+                    src: src,
+                    left: ((1 - i)%3) * width,
+                    top: -Math.floor((i - 1)/3) * height
+                });
+                let targetIdx = i;
+                if(i !== 7){
+                    targetIdx = targetIdxs.splice(0, 1)[0];
+                }
+                document.querySelector('#slot-' + targetIdx).appendChild(card);
+            }
+            let emptySlot = document.createElement('div');
+            emptySlot.id = 'empty-slot';
+            emptySlot.classList.add('empty-slot');
+            emptySlot.style.cssText = formatString('display:inline-block;width: {width}px;height: {height}px;background-color:#f5f3f3;', {width: width, height: height});
+            wrapper.appendChild(emptySlot);
+
+            let exampleSlot = document.createElement('div');
+            exampleSlot.id = 'example-slot';
+            exampleSlot.classList.add('empty-slot');
+            exampleSlot.style.cssText = formatString('display:inline-block;width: {width}px;height: {height}px;background-image: url("{src}");background-size: contain;', {width: width, height: height, src: src});
+            wrapper.appendChild(exampleSlot);
+        }
+
+        function createValidRandomIdx(){
+            let idxs = [];
+            do{
+                idxs = randomIdxs();
+            }while(!isValid(idxs));
+            return idxs;
+        }
+
+        function isValid(idxs){
+            let count = 0;
+            for(let i = 0; i < idxs.length - 1; i++){
+                for(let j = i + 1; j < idxs.length; j++){
+                    if(idxs[j] < idxs[i]){
+                        count++;
+                    }
+                }
+            }
+            return count % 2 === 0;
+        }
+
+        function randomIdxs(){
+            let targetIdxs = [1, 2, 3, 4, 5, 6, 8, 9];// number 7 is for the empty slot
+            let idxs = [];
+            while(targetIdxs.length > 0){
+                idxs.push(targetIdxs.splice(getRandomInt(targetIdxs.length), 1)[0]);
+            }
+            return idxs;
+        }
+
+        function isSlotEmpty(id){
+            return document.querySelector(id).querySelector('.card') == null;
+        }
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        function removeAll(elements){
+            for(let i = 0; i < elements.length; i++){
+                elements[i].remove();
+            }
+        }
+
+        document.querySelector('#wrapper').addEventListener('click', e => {
+            let card = e.srcElement;
+            if(!card.classList.contains('card')){
+                return;
+            }
+            let currentSlot = card.parentElement;
+            let targetSlot = null;
+            if(currentSlot.id === 'empty-slot' && isSlotEmpty('#slot-7')){
+                targetSlot = '#slot-7';
+            }else{
+                let idx = parseInt(currentSlot.id.split('-')[1]);
+                if((idx - 1)%3 !== 0 && isSlotEmpty('#slot-' + (idx - 1))){// left
+                    targetSlot = '#slot-' + (idx - 1);
+                }else if(idx%3 !== 0 && isSlotEmpty('#slot-' + (idx + 1))){//right
+                    targetSlot = '#slot-' + (idx + 1);
+                }else if(idx > 3 && isSlotEmpty('#slot-' + (idx - 3))){//top
+                    targetSlot = '#slot-' + (idx - 3);
+                }else if(idx < 7 && isSlotEmpty('#slot-' + (idx + 3))){// bottom
+                    targetSlot = '#slot-' + (idx + 3);
+                }else if(idx === 7 && isSlotEmpty('#empty-slot')){
+                    targetSlot = '#empty-slot';
+                }
+            }
+            if(targetSlot !== null){
+                card.style.display = 'none';
+                card.remove();
+                document.querySelector(targetSlot).appendChild(card);
+                card.style.display = 'block';
+            }
+        }, false);
+        document.querySelector('#start-btn').addEventListener('click', e => {
+            let cards = document.querySelectorAll('.card');
+            let emptySlots = document.querySelectorAll('.empty-slot');
+            removeAll(cards);
+            removeAll(emptySlots);
+            init('./img/810_480.jpg');
+            setTimeout(() => document.querySelector('#wrapper').style.display = 'block', 10);
+        });
+
+    </script>
+</body>
+</html>
