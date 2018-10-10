@@ -57,11 +57,16 @@
             font-size: 1.6em;
             cursor: pointer;
         }
+        #img-src{
+            width: 100%;
+            height: 24px;
+            padding-left: 1em;
+        }
     </style>
     <title>Game</title>
 </head>
 <body>
-    <button id="start-btn">开始游戏</button>
+    <input id="img-src" type="text"><button id="start-btn">开始游戏</button>
     <div id="wrapper">
         <div id="board">
             <div class="slot" id="slot-1"></div>
@@ -76,10 +81,11 @@
         </div>
     </div>
     <script>
-        function init(src){
+        function init(src, cb){
             let srcImg = document.createElement('img');
             srcImg.onload = function(i){
                 initBoard(srcImg, src);
+                cb && cb();
             }
             srcImg.onerror = function(err){
                 console.error(err);
@@ -210,10 +216,12 @@
         document.querySelector('#start-btn').addEventListener('click', e => {
             let cards = document.querySelectorAll('.card');
             let emptySlots = document.querySelectorAll('.empty-slot');
+            let imgSrc = document.querySelector('#img-src').value || './img/810_480.jpg';
             removeAll(cards);
             removeAll(emptySlots);
-            init('./img/810_480.jpg');
-            setTimeout(() => document.querySelector('#wrapper').style.display = 'block', 10);
+            init(imgSrc, ()=> {
+                document.querySelector('#wrapper').style.display = 'block';
+            });
         });
 
     </script>
