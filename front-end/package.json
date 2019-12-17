@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build-dev": "webpack --config build/webpack.config.dev.js",
+    "build-customized": "webpack --config build/webpack.config.env.js",
     "build": "webpack --config build/webpack.config.pro.js",
-    "dev": "webpack-dev-server --config build/webpack.config.dev.js"
+    "dev": "webpack-dev-server --config build/webpack.config.dev.js",
+    "dev-cus": "webpack-dev-server --config build/webpack.config.env.js"
   },
   "author": "Allen",
   "license": "MIT",
